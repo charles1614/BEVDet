@@ -23,7 +23,7 @@ RUN if [ ${USE_SRC_INSIDE} == true ] ; \
     fi
 
 ### update apt and install libs
-RUN sed -i s:/archive.ubuntu.com:/mirrors.tuna.tsinghua.edu.cn/ubuntu:g /etc/apt/sources.list
+RUN sed -i s:/archive.ubuntu.com:/mirrors.aliyun.com/ubuntu/:g /etc/apt/sources.list
 RUN cat /etc/apt/sources.list
 RUN chmod 777 /tmp
 RUN apt-get clean && apt-get update &&\
@@ -42,13 +42,13 @@ RUN /opt/conda/bin/conda install pytorch==${TORCH_VERSION} torchvision==${TORCHV
 ENV PATH /opt/conda/bin:$PATH
 
 ### install mmcv-full
-RUN /opt/conda/bin/pip install mmcv-full==${MMCV_VERSION} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${TORCH_VERSION}/index.html  -i https://pypi.tuna.tsinghua.edu.cn/simple
+RUN /opt/conda/bin/pip install mmcv-full==${MMCV_VERSION} -f https://download.openmmlab.com/mmcv/dist/cu${CUDA//./}/torch${TORCH_VERSION}/index.html  -i https://mirrors.aliyun.com/pypi/simple/
 
 WORKDIR /root/workspace
 ### get onnxruntime
 RUN wget https://github.com/microsoft/onnxruntime/releases/download/v${ONNXRUNTIME_VERSION}/onnxruntime-linux-x64-${ONNXRUNTIME_VERSION}.tgz \
     && tar -zxvf onnxruntime-linux-x64-${ONNXRUNTIME_VERSION}.tgz &&\
-    pip install onnxruntime-gpu==${ONNXRUNTIME_VERSION} -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install onnxruntime-gpu==${ONNXRUNTIME_VERSION} -i https://mirrors.aliyun.com/pypi/simple/
 
 ### cp trt from pip to conda
 RUN cp -r /usr/local/lib/python${PYTHON_VERSION}/dist-packages/tensorrt* /opt/conda/lib/python${PYTHON_VERSION}/site-packages/
@@ -66,7 +66,7 @@ RUN cd mmdeploy &&\
     cmake -DMMDEPLOY_TARGET_BACKENDS="ort;trt" .. &&\
     make -j$(nproc) &&\
     cd .. &&\
-    pip install -e .  -i https://pypi.tuna.tsinghua.edu.cn/simple
+    pip install -e .  -i https://mirrors.aliyun.com/pypi/simple/
 
 ### build sdk
 RUN git clone https://github.com/openppl-public/ppl.cv.git &&\
@@ -97,7 +97,7 @@ RUN cd /root/workspace/mmdeploy &&\
 
 ENV LD_LIBRARY_PATH="/root/workspace/mmdeploy/build/lib:${BACKUP_LD_LIBRARY_PATH}"
 
-RUN pip install mmdet==2.25.1 mmsegmentation==0.25.0  -i https://pypi.tuna.tsinghua.edu.cn/simple && \
+RUN pip install mmdet==2.25.1 mmsegmentation==0.25.0  -i https://mirrors.aliyun.com/pypi/simple/ && \
     cd ..
 
 RUN pip install pycuda \
@@ -109,5 +109,5 @@ RUN pip install pycuda \
     plyfile \
     scikit-image \
     tensorboard \
-    trimesh==2.35.39 -i https://pypi.tuna.tsinghua.edu.cn/simple
+    trimesh==2.35.39 -i https://mirrors.aliyun.com/pypi/simple/
 
