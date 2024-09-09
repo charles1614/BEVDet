@@ -23,7 +23,7 @@ RUN if [ ${USE_SRC_INSIDE} == true ] ; \
     fi
 
 ### update apt and install libs
-RUN sed -i s:/archive.ubuntu.com:/mirrors.aliyun.com/ubuntu/:g /etc/apt/sources.list
+RUN sed -i s:/archive.ubuntu.com:/mirrors.aliyun.com/:g /etc/apt/sources.list
 RUN cat /etc/apt/sources.list
 RUN chmod 777 /tmp
 RUN apt-get clean && apt-get update &&\
